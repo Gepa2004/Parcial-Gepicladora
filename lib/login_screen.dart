@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -6,49 +7,79 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade200,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              Text(
-                'Bienvenido',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 40),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Correo electrónico',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+              const SizedBox(height: 40),
+              Image.asset('assets/gepicladoraJPG.jpg', height: 120),
+              const SizedBox(height: 20),
+              const Center(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 30),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Usuario',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                  hintText: 'Contraseña',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Recuperar contraseña
+                  },
+                  child: const Text(
+                    'Recuperar Contraseña',
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushReplacementNamed(context, '/home');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Text('Iniciar sesión'),
+                child: const Text('LOGIN', style: TextStyle(fontSize: 16)),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  child: const Text(
+                    'Crear cuenta',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
               ),
             ],
           ),
