@@ -1,8 +1,40 @@
-
 import 'package:flutter/material.dart';
+import 'usuarios_data.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _contrasenaController = TextEditingController();
+  String _mensajeError = '';
+
+  void _validarLogin() {
+    final usuarioIngresado = _usuarioController.text.trim();
+    final contrasenaIngresada = _contrasenaController.text;
+
+    final usuarioValido = usuarios.firstWhere(
+          (u) =>
+      u['usuario'] == usuarioIngresado &&
+          u['contrasena'] == contrasenaIngresada,
+      orElse: () => {},
+    );
+
+    if (usuarioValido.isNotEmpty) {
+      setState(() {
+        _mensajeError = '';
+      });
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      setState(() {
+        _mensajeError = 'Usuario o contraseña incorrectos';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +57,41 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               TextField(
+                controller: _usuarioController,
                 decoration: InputDecoration(
                   labelText: 'Usuario',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
+                controller: _contrasenaController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
+              if (_mensajeError.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _mensajeError,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
               const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    // Recuperar contraseña
+                    // Recuperar contraseña (opcional)
                   },
                   child: const Text(
                     'Recuperar Contraseña',
@@ -57,9 +101,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
+                onPressed: _validarLogin,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 16),

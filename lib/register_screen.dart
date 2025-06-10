@@ -1,7 +1,46 @@
 import 'package:flutter/material.dart';
+import 'usuarios_data.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _correoController = TextEditingController();
+  final TextEditingController _contrasenaController = TextEditingController();
+  final TextEditingController _confirmarContrasenaController = TextEditingController();
+
+  String _mensajeError = '';
+
+  void _crearCuenta() {
+    final usuario = _usuarioController.text.trim();
+    final correo = _correoController.text.trim();
+    final contrasena = _contrasenaController.text;
+    final confirmar = _confirmarContrasenaController.text;
+
+    if (usuario.isEmpty || correo.isEmpty || contrasena.isEmpty || confirmar.isEmpty) {
+      setState(() {
+        _mensajeError = 'Por favor, completa todos los campos';
+      });
+      return;
+    }
+
+    if (contrasena != confirmar) {
+      setState(() {
+        _mensajeError = 'Las contraseñas no coinciden';
+      });
+      return;
+    }
+
+    // Agregar usuario a la lista global
+    usuarios.add({'usuario': usuario, 'contrasena': contrasena});
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +54,6 @@ class RegisterScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
 
-              // Aquí agregamos la imagen
               Image.asset(
                 'assets/gepicladoraJPG.jpg',
                 height: 120,
@@ -31,7 +69,9 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
+
               TextField(
+                controller: _usuarioController,
                 decoration: InputDecoration(
                   labelText: 'Usuario',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -39,8 +79,11 @@ class RegisterScreen extends StatelessWidget {
                   fillColor: Colors.white,
                 ),
               ),
+
               const SizedBox(height: 12),
+
               TextField(
+                controller: _correoController,
                 decoration: InputDecoration(
                   labelText: 'Correo',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -48,8 +91,11 @@ class RegisterScreen extends StatelessWidget {
                   fillColor: Colors.white,
                 ),
               ),
+
               const SizedBox(height: 12),
+
               TextField(
+                controller: _contrasenaController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
@@ -58,8 +104,11 @@ class RegisterScreen extends StatelessWidget {
                   fillColor: Colors.white,
                 ),
               ),
+
               const SizedBox(height: 12),
+
               TextField(
+                controller: _confirmarContrasenaController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Confirmar contraseña',
@@ -68,29 +117,40 @@ class RegisterScreen extends StatelessWidget {
                   fillColor: Colors.white,
                 ),
               ),
+
+              if (_mensajeError.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _mensajeError,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+
               const SizedBox(height: 10),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context); // vuelve al login
+                      Navigator.pop(context);
                     },
                     child: const Text('Tengo cuenta', style: TextStyle(color: Colors.blue)),
                   ),
                   TextButton(
                     onPressed: () {
-                      // Aquí puede ir recuperar contraseña
+                      // Recuperar contraseña opcional
                     },
                     child: const Text('Recuperar Contraseña', style: TextStyle(color: Colors.blue)),
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
+
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Vuelve al login
-                },
+                onPressed: _crearCuenta,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 16),

@@ -18,6 +18,14 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/help');
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Cerrar sesión',
+            onPressed: () {
+              // Regresa al login y borra el historial de navegación
+              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+            },
+          ),
         ],
       ),
       body: Center(
